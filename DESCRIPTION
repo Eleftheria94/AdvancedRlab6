@@ -1,0 +1,15 @@
+Package: AdvancedRlab6
+Type: Package
+Title: Advanced R Programming Lab 6 Assignment
+Version: 0.1
+Date: 2020-10-21
+Authors@R: c(
+    person("Salvador", "Marti Roman", email = "salvador19marti@gmail.com", role = "aut"),
+    person("Eleftheria", "Chatzitheodoridou", email = "e.hatzitheodoridi@gmail.com", role = c("aut", "cre"))) 
+Maintainer: Salvador Marti Roman <salvador19marti@gmail.com>
+Description: More about what it does (maybe more than one line)
+Encoding: UTF-8
+Depends: 
+    R (>= 3.3.0)
+License: GPL-3
+RoxygenNote: 7.1.1
