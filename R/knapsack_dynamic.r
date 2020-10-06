@@ -3,12 +3,12 @@
 #' @name knapsack_dynamic
 #' @param x A data frame that contains two positive vectors for weights (w) and values (v).
 #' @param W The maximum knapsack capacity.
-#' @return A list containing the value and the elements used to fill the knapsack.
+#' @return A list containing the values and elements used to fill the knapsack.
 #' @description The following algorithm calculates m(n,W). A more detailed explanation of the pseudo-algorithm followed can be found on Wikipedia.
 #' @references \url{https://en.wikipedia.org/wiki/Knapsack_problem}
 #' @export knapsack_dynamic
 #' @examples
-#' #' set.seed(42)
+#' set.seed(42)
 #' n <- 2000
 #' w = sample(1:4000, size = n, replace = TRUE)
 #' v = runif(n = n, 0, 10000)
@@ -26,7 +26,7 @@ W = 2000
 knapsack_dynamic <- function(x, W) {
   # Check for inputs
   stopifnot(is.data.frame(x))
-  stopifnot(is.integer(x$w) && is.numeric(x$v))  #weights are positive, discrete values
+  stopifnot(is.integer(x$w) && is.numeric(x$v))  # weights are positive, discrete values
   stopifnot(W > 0 && any(x$w > 0) && any(x$v > 0))
   
   n <- nrow(x)
