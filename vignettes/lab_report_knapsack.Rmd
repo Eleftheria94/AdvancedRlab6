@@ -1,0 +1,124 @@
+---
+title: "lab_report_knapsack"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette:
+  toc: true
+vignette: >
+  %\VignetteIndexEntry{AdvancedRlab6}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(AdvancedRlab6)
+```
+
+# The Knapsack Problem
+
+## Description
+
+The knapsack problem is a discrete optimization problem where we have a knapsack that can take a limited weight W and we want to fill this knapsack with a number of items i = 1, ..., n, each with a weight w_i and a value v_i. The goal is to find the knapsack with the largest value of the elements added
+to the knapsack. 
+
+In this package, we have implemented the Brute Force algorithm, the Dynamic algorithm and the Heuristic Greedy algorithm as described in pseudo-code on Wikipedia's page <https://en.wikipedia.org/wiki/Knapsack_problem>. We have also tried *parallelizing* in the Brute Force algorithm using Hadley's instructions (Found here: <http://adv-r.had.co.nz/Profiling.html>).
+
+The data set used for testing the algorithms can be seen below:
+
+```{r}
+set.seed(42)
+n <- 100000
+knapsack_objects <- data.frame(w = sample(1:4000, size = n, replace = TRUE), v = runif(n = n, 0, 10000))
+```
+
+## Brute Force algorithm
+
+Example (using $n = 16$):
+
+```{r}
+AdvancedRlab6::brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)
+```
+
+How much time does it takes to run the algorithm for $n = 16$ objects?
+
+```{r}
+ptm <- proc.time()  
+brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)
+t1 <- proc.time() 
+t2 <- (t1-ptm)[3]
+```
+
+The `brute_force_knapsack()` takes ~`r t2`seconds for $n = 16$.
+
+## Parallelizing Brute Force algorithm
+
+Example (using $n = 50$):
+
+```{r}
+AdvancedRlab6::brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, TRUE)
+```
+
+```{r, eval = FALSE}
+ptm <- proc.time()  
+brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, TRUE)
+t1 <- proc.time() 
+t2 <- (t1-ptm)[3]
+```
+
+
+```{r, eval = FALSE}
+ptm <- proc.time()  
+brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, FALSE)
+t1 <- proc.time() 
+t2 <- (t1-ptm)[3]
+```
+
+For $n = 50$ the `brute_force_knapsack()` with `parallel = TRUE` takes ~ seconds.
+
+For $n = 50$ the `brute_force_knapsack()` with `parallel = FALSE` takes ~ seconds.
+
+## Dynamic algorithm
+
+Example (using $n = 500$):
+
+```{r}
+AdvancedRlab6::knapsack_dynamic(x = knapsack_objects[1:500,], W = 3500)
+```
+
+How much time does it takes to run the algorithm for $n = 500$ objects?
+
+```{r}
+ptm <- proc.time()  
+knapsack_dynamic(x = knapsack_objects[1:500,], W = 3500)
+t1 <- proc.time() 
+t2 <- (t1-ptm)[3]
+```
+
+The `knapsack_dynamic()` takes ~`r t2`seconds for $n = 500$.
+
+## Heuristic Greedy algorithm
+
+Example (using $n = 1000000$):
+
+```{r}
+AdvancedRlab6::greedy_knapsack(x = knapsack_objects[1:1000000,], W = 3500)
+```
+
+How much time does it takes to run the algorithm for $n = 1000000$ objects?
+
+```{r}
+ptm <- proc.time()  
+greedy_knapsack(x = knapsack_objects[1:1000000,], W = 3500)
+t1 <- proc.time() 
+t2 <- (t1-ptm)[3]
+```
+
+The `greedy_knapsack()` takes ~`r t2`seconds for $n = 1000000$.
+
+## Profiling and optimizing code

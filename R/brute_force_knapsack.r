@@ -23,10 +23,21 @@ set.seed(42)
 n <- 2000
 knapsack_objects <- data.frame(w = sample(1:4000, size = n, replace = TRUE), v = runif(n = n, 0, 10000))
 
-brute_force_knapsack <- function(x, W) {
+brute_force_knapsack <- function(x, W, parallel = FALSE) {
   # Check for inputs
   stopifnot(is.data.frame(x))
   stopifnot(is.integer(x$w) && is.numeric(x$v))  # weights are positive, discrete values
   stopifnot(W > 0 && any(x$w > 0) && any(x$v > 0)) 
   
+  elements <- vector()
+  n <- nrow(x)
+  value <- 0
+  
+  
 }
+
+
+  
+
+  
+

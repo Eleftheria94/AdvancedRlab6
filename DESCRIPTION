@@ -11,5 +11,11 @@ Description: An R package that implements the greedy algorithm, the dynamic algo
 Encoding: UTF-8
 Depends: 
     R (>= 3.3.0)
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown,
+    parallel
 License: GPL-3
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
