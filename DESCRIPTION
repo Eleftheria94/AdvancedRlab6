@@ -15,7 +15,9 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    parallel
+    parallel,
+    lineprof,
+    rlang
 License: GPL-3
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

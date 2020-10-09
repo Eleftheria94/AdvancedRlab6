@@ -1,7 +1,8 @@
 ---
 title: "lab_report_knapsack"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette:
+output: 
+  rmarkdown::html_vignette:
   toc: true
 vignette: >
   %\VignetteIndexEntry{AdvancedRlab6}
@@ -42,41 +43,41 @@ knapsack_objects <- data.frame(w = sample(1:4000, size = n, replace = TRUE), v =
 Example (using $n = 16$):
 
 ```{r}
-AdvancedRlab6::brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)
+#AdvancedRlab6::brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)
 ```
 
 How much time does it takes to run the algorithm for $n = 16$ objects?
 
 ```{r}
-ptm <- proc.time()  
-brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)
-t1 <- proc.time() 
-t2 <- (t1-ptm)[3]
+#ptm <- proc.time()  
+#brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)
+#t1 <- proc.time() 
+#t2 <- (t1-ptm)[3]
 ```
 
-The `brute_force_knapsack()` takes ~`r t2`seconds for $n = 16$.
+The `brute_force_knapsack()` takes seconds for $n = 16$.
 
 ## Parallelizing Brute Force algorithm
 
 Example (using $n = 50$):
 
 ```{r}
-AdvancedRlab6::brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, TRUE)
+#AdvancedRlab6::brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, TRUE)
 ```
 
 ```{r, eval = FALSE}
-ptm <- proc.time()  
-brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, TRUE)
-t1 <- proc.time() 
-t2 <- (t1-ptm)[3]
+#ptm <- proc.time()  
+#brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, TRUE)
+#t1 <- proc.time() 
+#t2 <- (t1-ptm)[3]
 ```
 
 
 ```{r, eval = FALSE}
-ptm <- proc.time()  
-brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, FALSE)
-t1 <- proc.time() 
-t2 <- (t1-ptm)[3]
+#ptm <- proc.time()  
+#brute_force_knapsack(x = knapsack_objects[1:50,], W = 3500, FALSE)
+#t1 <- proc.time() 
+#t2 <- (t1-ptm)[3]
 ```
 
 For $n = 50$ the `brute_force_knapsack()` with `parallel = TRUE` takes ~ seconds.
