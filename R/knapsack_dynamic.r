@@ -32,13 +32,13 @@ knapsack_dynamic <- function(x, W) {
   n <- nrow(x)
   w <- x$w
   v <- x$v
-  m <- matrix(rep(0, n * W), nrow = n)
+  m <- matrix(rep(0, n*W), nrow = n)
   for (i in 2:n) {
     for (j in 1:W) {
       if (w[i] > j) {
-        m[i, j] <- m[i - 1, j]
+        m[i,j] <- m[i-1, j]
       } else {
-        m[i, j] <- max(m[i - 1, j], m[i - 1, j - w[i]] + v[i])
+        m[i,j] <- max(m[i-1, j], m[i-1, j-w[i]] + v[i])
       }
     }
   }
@@ -46,7 +46,7 @@ knapsack_dynamic <- function(x, W) {
   count_elements <- c(n, W)
   j <- W
   for (i in n:2) {
-    if (m[i,j] == m[i - 1,j]) {
+    if (m[i,j] == m[i-1,j]) {
       count_elements[1] <- count_elements[1] - 1
     } else {
       j <- j - w[i]
