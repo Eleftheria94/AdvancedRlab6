@@ -14,7 +14,7 @@ test_that("Correct object is returned", {
 })
 
 
-test_that("functions rejects erroneous input.", {
+test_that("Function rejects erroneous input.", {
   expect_error(brute_force_knapsack("hej", 3500))
   expect_error(brute_force_knapsack(x = knapsack_objects[1:8,], W = -3500))
 })

@@ -25,52 +25,46 @@ n <- 2000
 knapsack_objects <- data.frame(w = sample(1:4000, size = n, replace = TRUE), v = runif(n = n, 0, 10000))
 
 
-brute_force_knapsack = function(x,W,parallel=FALSE){
+brute_force_knapsack <- function(x, W, parallel = FALSE) {
   
   # Check for inputs
   stopifnot(is.data.frame(x))
   stopifnot(is.integer(x$w) && is.numeric(x$v))  # weights are positive, discrete values
   stopifnot(W > 0 && any(x$w > 0) && any(x$v > 0))
   
-  is_valid_solution = function(solution, bag, W){
-    solutions = intToBits(solution)[1:dim(x)[1]]
-    value = sum(x$v * as.integer(solutions))
-    weight = sum(x$w * as.integer(solutions))
-    if(weight <= W){
-      result = value
-    }else{
-      result = -1
+  is_valid_solution <- function(solution, bag, W) {
+    solutions <- intToBits(solution)[1:dim(x)[1]]
+    value <- sum(x$v * as.integer(solutions))
+    weight <- sum(x$w * as.integer(solutions))
+    if(weight <= W) {
+      result <- value
+    } else {
+      result <- -1
     }
     return(result)
   }
   
-  combo_number = (2^dim(x)[1]) - 1
+  combo_number <- (2^dim(x)[1]) - 1
   
-  if(parallel){
+  if(parallel) {
     cores <- parallel::detectCores()
     clusters <- parallel::makeCluster(cores)
-    solutions = parallel::parSapply(cl=clusters,
+    solutions <- parallel::parSapply(cl = clusters,
                                     1:combo_number,
-                                    FUN=is_valid_solution,
-                                    bag=x,
-                                    W=W)
-  }else{
-    solutions = sapply(1:combo_number,
+                                    FUN = is_valid_solution,
+                                    bag = x,
+                                    W = W)
+  } else {
+    solutions <- sapply(1:combo_number,
                        is_valid_solution,
-                       bag=x,
-                       W=W)
+                       bag = x,
+                       W = W)
   }
   
-  best_solution = which.max(solutions)
-  value = solutions[best_solution]
+  best_solution <- which.max(solutions)
+  value <- solutions[best_solution]
   
-  elements = which(intToBits(best_solution)>0)
+  elements <- which(intToBits(best_solution) > 0)
   
-  return(list(value=value, elements=elements))
+  return(list(value = value, elements = elements))
 }
-
-# Answer: The parallel performance gain is at best 1/Core_count
-# This is often much less due to bottlenecks in the distributing and gathering
-# of data.
-
-#brute_force_knapsack(knapsack_objects[1:8,],W=3500,parallel = TRUE)
