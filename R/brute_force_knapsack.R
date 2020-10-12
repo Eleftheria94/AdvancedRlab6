@@ -19,55 +19,58 @@
 #' brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
 
 
+
 set.seed(42)
 n <- 2000
 knapsack_objects <- data.frame(w = sample(1:4000, size = n, replace = TRUE), v = runif(n = n, 0, 10000))
 
-brute_force_knapsack <- function(x, W, parallel = FALSE) {
+
+brute_force_knapsack = function(x,W,parallel=FALSE){
+  
   # Check for inputs
   stopifnot(is.data.frame(x))
   stopifnot(is.integer(x$w) && is.numeric(x$v))  # weights are positive, discrete values
   stopifnot(W > 0 && any(x$w > 0) && any(x$v > 0))
-
-  test_func <- function(numb) {
-    for (i in numb) {
-      index <- c()
-      w <- 0
-      v <- 0
-      n <- nrow(x)
-      
-      # Enumerating all different combinations using a binary representation of 1 to 2^n and including all elements of that is equal to 1 with intToBits
-      
-      binary <- intToBits(i) # Convert to raw vectors
-      
-      for (j in 1:length(binary)) {
-        if(bits[j] == 1){
-        w <- w + x$w[j]
-        v <- v + x$v[j]
-        index <- c(index, j)
-        }
-      }
-      
-      if (v > value && w <= W) {
-        value <- v
-        elements <- index
-      }
+  
+  is_valid_solution = function(solution, bag, W){
+    solutions = intToBits(solution)[1:dim(x)[1]]
+    value = sum(x$v * as.integer(solutions))
+    weight = sum(x$w * as.integer(solutions))
+    if(weight <= W){
+      result = value
+    }else{
+      result = -1
     }
-    return(list(value = round(value, 0), elements = elements))
+    return(result)
   }
   
-  # Parallelization
+  combo_number = (2^dim(x)[1]) - 1
   
-  if (parallel == TRUE) {
+  if(parallel){
     cores <- parallel::detectCores()
-    clusters <- parallel::makeCluster(cores) # creates a set of R copies running in parallel
-    lst <- parallel::parSapply(clusters, 1:((2^n)-1), test_func)
-    parallel::stopCluster(clusters)
-    
-    max_value <- unlist(sapply(lst, function(numb) numb$value))
-    max_value <- which.max(max_value)
-    return(lst[[max_value]])
-  } else {
-    return(test_func(1:((2^n) - 1)))
+    clusters <- parallel::makeCluster(cores)
+    solutions = parallel::parSapply(cl=clusters,
+                                    1:combo_number,
+                                    FUN=is_valid_solution,
+                                    bag=x,
+                                    W=W)
+  }else{
+    solutions = sapply(1:combo_number,
+                       is_valid_solution,
+                       bag=x,
+                       W=W)
   }
+  
+  best_solution = which.max(solutions)
+  value = solutions[best_solution]
+  
+  elements = which(intToBits(best_solution)>0)
+  
+  return(list(value=value, elements=elements))
 }
+
+# Answer: The parallel performance gain is at best 1/Core_count
+# This is often much less due to bottlenecks in the distributing and gathering
+# of data.
+
+#brute_force_knapsack(knapsack_objects[1:8,],W=3500,parallel = TRUE)
