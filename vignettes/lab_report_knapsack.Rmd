@@ -19,8 +19,8 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(AdvancedRlab6)
-library(lineprof)
-library(rlang)
+#library(lineprof)
+#library(rlang)
 ```
 
 # The Knapsack Problem
