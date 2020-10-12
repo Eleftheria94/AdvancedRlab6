@@ -118,14 +118,14 @@ By performing profiling, we are able to identify and fix bottlenecks in our code
 An example for `knapsack_dynamic` is provided below:
 
 ```{r}
-lineprof(knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500), interval = 0.01, torture = FALSE)
+#lineprof(knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500), interval = 0.01, torture = FALSE)
 ```
 
 ```{r}
-Rprof()
-knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500)
-Rprof(NULL)
-summaryRprof()
+#Rprof()
+#knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500)
+#Rprof(NULL)
+#summaryRprof()
 ```
 
 We did not identify any bottlenecks in our code for this function according to `summaryRprof()`, therefore we did not proceed to any changes.
